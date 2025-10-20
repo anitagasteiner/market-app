@@ -1,0 +1,11 @@
+# Django #
+.market_app/__pycache__
+.market_app/migrations
+.supermarket/__pycache__
+db.sqlite3
+
+# Environments 
+.env 
+
+# Visual Studio Code # 
+.vscode
