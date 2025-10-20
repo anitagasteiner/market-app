@@ -6,21 +6,36 @@ from market_app.models import Market, Seller, Product
 from rest_framework.views import APIView
 
 
-@api_view(['GET', 'POST']) # decorator
-def markets_view(request):
+class MarketsView(APIView):
 
-    if request.method == 'GET':
+    def get(self, request):
         markets = Market.objects.all()
         serializer = MarketHyperlinkedSerializer(markets, many=True, context={'request': request}, fields=('id', 'name', 'net_worth', 'url'))
         return Response(serializer.data)
     
-    if request.method == 'POST':
+    def post(self, request):
         serializer = MarketSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data)
-        else:
-            return Response(serializer.errors)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+# @api_view(['GET', 'POST']) # decorator
+# def markets_view(request):
+
+#     if request.method == 'GET':
+#         markets = Market.objects.all()
+#         serializer = MarketHyperlinkedSerializer(markets, many=True, context={'request': request}, fields=('id', 'name', 'net_worth', 'url'))
+#         return Response(serializer.data)
+    
+#     if request.method == 'POST':
+#         serializer = MarketSerializer(data=request.data)
+#         if serializer.is_valid():
+#             serializer.save()
+#             return Response(serializer.data)
+#         else:
+#             return Response(serializer.errors)
 
 
 @api_view(['GET', 'DELETE', 'PUT'])
