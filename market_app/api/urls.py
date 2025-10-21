@@ -4,7 +4,7 @@ from .views import MarketsView, MarketDetail, SellerOfMarketList, SellersView, s
 urlpatterns = [
     path('market/', MarketsView.as_view()),
     path('market/<int:pk>/', MarketDetail.as_view(), name='market-detail'),
-    path('market/<int:pk>/sellers', SellerOfMarketList.as_view()),
+    path('market/<int:pk>/sellers/', SellerOfMarketList.as_view()),
     path('seller/', SellersView.as_view()),
     path('seller/<int:pk>/', seller_single_view, name='seller_single'),
     path('product/', ProductsView.as_view()),
