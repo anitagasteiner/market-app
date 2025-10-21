@@ -20,47 +20,21 @@ class MarketDetail(generics.RetrieveUpdateDestroyAPIView):
 
 class SellerOfMarketList(generics.ListAPIView):
     serializer_class = SellerSerializer
-    
+
     def get_queryset(self):
         pk = self.kwargs.get('pk')
         market = Market.objects.get(pk = pk)
         return market.sellers.all()
 
 
-class SellersView(mixins.ListModelMixin, mixins.CreateModelMixin, generics.GenericAPIView):
-
+class SellersView(generics.ListCreateAPIView):
     queryset = Seller.objects.all()
     serializer_class = SellerSerializer
 
-    def get(self, request, *args, **kwargs):
-        return self.list(request, *args, **kwargs)
-    
-    def post(self, request, *args, **kwargs):
-        return self.create(request, *args, **kwargs)
 
-
-@api_view(['GET', 'DELETE', 'PUT'])
-def seller_single_view(request, pk):
-    
-    if request.method == 'GET':
-        seller = Seller.objects.get(pk=pk)
-        serializer = SellerSerializer(seller, context={'request': request})
-        return Response(serializer.data)    
-    
-    if request.method == 'PUT':
-        seller = Seller.objects.get(pk=pk)
-        serializer = SellerSerializer(seller, data=request.data, partial=True)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        else:
-            return Response(serializer.errors)
-             
-    if request.method == 'DELETE':
-        seller = Seller.objects.get(pk=pk)
-        serializer = SellerSerializer(seller)
-        seller.delete()
-        return Response(serializer.data)
+class SellerDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Seller.objects.all()
+    serializer_class = SellerSerializer
     
 
 class ProductsView(mixins.ListModelMixin, mixins.CreateModelMixin, generics.GenericAPIView):
