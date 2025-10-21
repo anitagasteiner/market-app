@@ -37,16 +37,9 @@ class SellerDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = SellerSerializer
     
 
-class ProductsView(mixins.ListModelMixin, mixins.CreateModelMixin, generics.GenericAPIView):
-
+class ProductsView(generics.ListCreateAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
-
-    def get(self, request, *args, **kwargs):
-        return self.list(request, *args, **kwargs)
-    
-    def post(self, request, *args, **kwargs):
-        return self.create(request, *args, **kwargs)
     
 
 @api_view(['GET', 'DELETE', 'PUT'])
