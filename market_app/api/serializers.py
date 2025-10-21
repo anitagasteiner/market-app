@@ -93,28 +93,29 @@ class SellerHyperlinkedSerializer(SellerSerializer, serializers.HyperlinkedModel
 
 class ProductSerializer(serializers.ModelSerializer):
     #markets = serializers.StringRelatedField()
-    markets = MarketSerializer(read_only=True)
+    market = MarketSerializer(read_only=True)
     market_ids = serializers.PrimaryKeyRelatedField(
         queryset=Market.objects.all(),
         write_only=True,
-        source='markets'
+        source='market'
     )
     #sellers = serializers.StringRelatedField()
-    sellers = SellerSerializer(read_only=True)
+    seller = SellerSerializer(read_only=True)
     seller_ids = serializers.PrimaryKeyRelatedField(
         queryset=Seller.objects.all(),
         write_only=True,
-        source='sellers'
+        source='seller'
     )
 
     class Meta:
         model = Product
         fields = '__all__'
+        fields = ['id', 'name', 'description', 'price', 'market_ids', 'market', 'seller_ids', 'seller']
 
 
 class ProductHyperlinkedSerializer(ProductSerializer, serializers.HyperlinkedModelSerializer):
-    markets = serializers.StringRelatedField()
-    sellers = serializers.StringRelatedField()
+    market = serializers.StringRelatedField()
+    seller = serializers.StringRelatedField()
 
     def __init__(self, *args, **kwargs):
         fields = kwargs.pop('fields', None)
@@ -129,4 +130,4 @@ class ProductHyperlinkedSerializer(ProductSerializer, serializers.HyperlinkedMod
             
     class Meta:
         model = Product
-        fields = ['id', 'name', 'description', 'price', 'markets', 'sellers', 'url']
+        fields = ['id', 'name', 'description', 'price', 'market', 'seller', 'url']
