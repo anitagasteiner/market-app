@@ -40,28 +40,9 @@ class SellerDetail(generics.RetrieveUpdateDestroyAPIView):
 class ProductsView(generics.ListCreateAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
-    
 
-@api_view(['GET', 'DELETE', 'PUT'])
-def product_single_view(request, pk):
-    
-    if request.method == 'GET':
-        product = Product.objects.get(pk=pk)
-        serializer = ProductSerializer(product)
-        return Response(serializer.data)    
-    
-    if request.method == 'PUT':
-        product = Product.objects.get(pk=pk)
-        serializer = ProductSerializer(product, data=request.data, partial=True)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        else:
-            return Response(serializer.errors)
-             
-    if request.method == 'DELETE':
-        product = Product.objects.get(pk=pk)
-        serializer = ProductSerializer(product)
-        product.delete()
-        return Response(serializer.data)
 
+class ProductDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
+    
