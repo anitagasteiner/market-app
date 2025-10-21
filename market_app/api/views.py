@@ -1,7 +1,7 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
-from .serializers import MarketSerializer, MarketHyperlinkedSerializer, SellerSerializer, SellerHyperlinkedSerializer, ProductSerializer
+from .serializers import MarketSerializer, MarketHyperlinkedSerializer, SellerSerializer, SellerHyperlinkedSerializer, ProductSerializer, ProductHyperlinkedSerializer
 from market_app.models import Market, Seller, Product
 from rest_framework.views import APIView
 from rest_framework import mixins
@@ -39,7 +39,7 @@ class SellerDetail(generics.RetrieveUpdateDestroyAPIView):
 
 class ProductsView(generics.ListCreateAPIView):
     queryset = Product.objects.all()
-    serializer_class = ProductSerializer
+    serializer_class = ProductHyperlinkedSerializer
 
 
 class ProductDetail(generics.RetrieveUpdateDestroyAPIView):
