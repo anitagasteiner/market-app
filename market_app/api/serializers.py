@@ -17,8 +17,8 @@ class MarketSerializer(serializers.ModelSerializer):
     sellers = serializers.StringRelatedField(many=True, read_only=True)    
     class Meta:
         model = Market
-        fields = '__all__'
-        #fields = ['name', 'url', 'description', 'location', 'net_worth', 'sellers']
+        #fields = '__all__'
+        fields = ['name', 'description', 'location', 'net_worth', 'sellers']
         #exclude = []
 
     def validate_name(self, value):
@@ -49,7 +49,7 @@ class MarketHyperlinkedSerializer(MarketSerializer, serializers.HyperlinkedModel
     class Meta:
         model = Market
         # Dafür muss ich die Fields definieren:
-        fields = ['id', 'url', 'name', 'location', 'description', 'net_worth']
+        fields = ['id', 'name', 'location', 'description', 'net_worth', 'sellers', 'url']
 
 
 class SellerSerializer(serializers.ModelSerializer):
@@ -70,6 +70,25 @@ class SellerSerializer(serializers.ModelSerializer):
 
     def get_market_count(self, obj):
         return obj.markets.count()
+
+
+class SellerHyperlinkedSerializer(SellerSerializer, serializers.HyperlinkedModelSerializer):
+    markets = serializers.StringRelatedField(many=True)    
+
+    def __init__(self, *args, **kwargs):
+        fields = kwargs.pop('fields', None)
+
+        super().__init__(*args, **kwargs)
+
+        if fields is not None:
+            allowed = set(fields)
+            existing = set(self.fields)
+            for field_name in existing - allowed:
+                self.fields.pop(field_name)
+            
+    class Meta:
+        model = Seller
+        fields = ['id', 'name', 'contact_info', 'market_count', 'markets', 'url']
 
 
 class ProductSerializer(serializers.ModelSerializer):
