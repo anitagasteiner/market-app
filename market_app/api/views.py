@@ -7,6 +7,11 @@ from .serializers import MarketSerializer, MarketHyperlinkedSerializer, SellerSe
 from market_app.models import Market, Seller, Product
 
 
+class ListRetrieveViewSet(mixins.ListModelMixin,
+                          mixins.RetrieveModelMixin,
+                          viewsets.GenericViewSet):
+    pass
+
 
 class MarketsView(generics.ListCreateAPIView):
     queryset = Market.objects.all()
@@ -69,7 +74,7 @@ class SellerDetail(generics.RetrieveUpdateDestroyAPIView):
 #         return Response(serializer.data)
     
 
-class ProductViewSet(viewsets.ModelViewSet):
+class ProductViewSet(ListRetrieveViewSet):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
 
