@@ -1,11 +1,11 @@
+from django.shortcuts import get_object_or_404
+from rest_framework import status, mixins, generics, viewsets
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from rest_framework import status
+from rest_framework.views import APIView
 from .serializers import MarketSerializer, MarketHyperlinkedSerializer, SellerSerializer, SellerListSerializer, SellerHyperlinkedSerializer, ProductSerializer, ProductHyperlinkedSerializer
 from market_app.models import Market, Seller, Product
-from rest_framework.views import APIView
-from rest_framework import mixins
-from rest_framework import generics
+
 
 
 class MarketsView(generics.ListCreateAPIView):
@@ -40,6 +40,19 @@ class SellersView(generics.ListCreateAPIView):
 class SellerDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Seller.objects.all()
     serializer_class = SellerSerializer
+
+
+class ProductViewSet(viewsets.ViewSet):
+    queryset = Product.objects.all()
+
+    def list(self, request):
+        serializer = ProductSerializer(self.queryset, many=True)
+        return Response(serializer.data)
+
+    def retrieve(self, request, pk=None):
+        product = get_object_or_404(self.queryset, pk=pk)
+        serializer = ProductSerializer(product)
+        return Response(serializer.data)
     
 
 class ProductsView(generics.ListCreateAPIView):

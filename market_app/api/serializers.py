@@ -98,25 +98,31 @@ class SellerHyperlinkedSerializer(SellerSerializer, serializers.HyperlinkedModel
 
 
 class ProductSerializer(serializers.ModelSerializer):
-    market = serializers.StringRelatedField()
-    #market = MarketSerializer(read_only=True)
-    market_ids = serializers.PrimaryKeyRelatedField(
-        queryset=Market.objects.all(),
-        write_only=True,
-        source='market'
-    )
-    seller = serializers.StringRelatedField()
-    #seller = SellerSerializer(read_only=True)
-    seller_ids = serializers.PrimaryKeyRelatedField(
-        queryset=Seller.objects.all(),
-        write_only=True,
-        source='seller'
-    )
-
-    class Meta:
+     class Meta:
         model = Product
         fields = '__all__'
-        fields = ['id', 'name', 'description', 'price', 'market_ids', 'market', 'seller_ids', 'seller']
+
+
+# class ProductSerializer(serializers.ModelSerializer):
+#     market = serializers.StringRelatedField()
+#     #market = MarketSerializer(read_only=True)
+#     market_ids = serializers.PrimaryKeyRelatedField(
+#         queryset=Market.objects.all(),
+#         write_only=True,
+#         source='market'
+#     )
+#     seller = serializers.StringRelatedField()
+#     #seller = SellerSerializer(read_only=True)
+#     seller_ids = serializers.PrimaryKeyRelatedField(
+#         queryset=Seller.objects.all(),
+#         write_only=True,
+#         source='seller'
+#     )
+
+#     class Meta:
+#         model = Product
+#         #fields = '__all__'
+#         fields = ['id', 'name', 'description', 'price', 'market_ids', 'market', 'seller_ids', 'seller']
 
 
 class ProductHyperlinkedSerializer(ProductSerializer, serializers.HyperlinkedModelSerializer):
